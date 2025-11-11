@@ -2,19 +2,31 @@ pipeline {
     agent any
 
     stages {
-        stage('Build WAR') {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/anilgowda28/git_practise.git
+            }
+        }
+
+        stage('Build WAR File') {
             steps {
                 sh 'mvn clean package'
+            }
+        }
+
+        stage('Show Files') {
+            steps {
+                sh 'ls -l target'
             }
         }
     }
 
     post {
         success {
-            echo 'WAR file created in target folder!'
+            echo 'WAR file created successfully inside target folder!'
         }
         failure {
-            echo 'Build failed!'
+            echo 'Build failed, check console output!'
         }
     }
 }
