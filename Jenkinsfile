@@ -1,6 +1,9 @@
 pipeline {
     agent any
-
+    tools {
+        maven 'Maven'
+        jdk 'Java_11'
+            }
     stages {
         stage('Checkout Code') {
             steps {
@@ -8,25 +11,15 @@ pipeline {
             }
         }
 
-        stage('Build WAR File') {
+        stage('Build clean') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean'
             }
         }
 
-        stage('Show Files') {
+        stage('Maven Build') {
             steps {
-                sh 'ls -l target'
+                sh 'mvn Build'
             }
         }
     }
-
-    post {
-        success {
-            echo 'WAR file created successfully inside target folder!'
-        }
-        failure {
-            echo 'Build failed, check console output!'
-        }
-    }
-}
