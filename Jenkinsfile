@@ -2,42 +2,28 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                // Pull latest code from GitHub
-                git branch: 'main', url: 'https://github.com/anilgowda28/git_practise.git
+                echo 'Pulling code from GitHub...'
+
+                git branch: 'main', url: 'https://github.com/anilgowda28/git_practise.git'
             }
         }
 
-        stage('Compile') {
+        stage('List Files') {
             steps {
-                echo 'Compiling C program...'
-                sh '''
-                    gcc hello.c -o hello
-                '''
-            }
-        }
-
-        stage('Run') {
-            steps {
-                echo 'Running compiled program...'
-                sh './hello'
-            }
-        }
-
-        stage('Post-Build') {
-            steps {
-                echo 'Build and run completed successfully.'
+                echo 'Listing files from repository...'
+                sh 'ls -l'
             }
         }
     }
 
     post {
-        failure {
-            echo '❌ Build failed!'
-        }
         success {
-            echo '✅ Build succeeded!'
+            echo '✅ Code pulled successfully from GitHub!'
+        }
+        failure {
+            echo '❌ Failed to pull code from GitHub.'
         }
     }
 }
